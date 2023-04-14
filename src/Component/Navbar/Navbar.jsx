@@ -19,6 +19,10 @@ const Navbar = () => {
         {
           label: 'Contact',
           path: '/contact'
+        },
+        {
+          label: 'Signup',
+          path: '/signup'
         }
       ];
       
