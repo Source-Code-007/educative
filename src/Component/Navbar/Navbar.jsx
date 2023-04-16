@@ -21,8 +21,12 @@ const Navbar = () => {
           path: '/contact'
         },
         {
-          label: 'Signup',
-          path: '/signup'
+          label: 'Signin',
+          path: '/signin'
+        },
+        {
+          label: 'Register',
+          path: '/register'
         }
       ];
       
