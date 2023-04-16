@@ -3,7 +3,7 @@ import { GoogleAuthProvider, getAuth, sendPasswordResetEmail, signInWithEmailAnd
 import { app } from '../../firebase/firebase.config';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 const SignIn = () => {
     const emailRef = useRef()
@@ -76,7 +76,7 @@ const SignIn = () => {
                     <input type="email" ref={emailRef} name="email" id="email" className='p-4 w-full text-slate-700 rounded-lg bg-slate-200 shadow-inner border-none' placeholder='Your email here' />
                     <div className='relative'>
                         <input type={passwordVisible? `text` : `password`} name="password" id="password" className='p-4 w-full text-slate-700 rounded-lg bg-slate-200 shadow-inner border-none' placeholder='Your password here' />
-                        <span onClick={()=> setPasswordVisible(!passwordVisible)} className='text-slate-700 text-lg absolute right-2 top-3'><FontAwesomeIcon icon={faEye}></FontAwesomeIcon></span> 
+                        <span onClick={()=> setPasswordVisible(!passwordVisible)} className='text-slate-700 text-lg absolute right-2 top-3'><FontAwesomeIcon icon={passwordVisible? faEye : faEyeSlash}></FontAwesomeIcon></span> 
                     </div>
                     <p className='text-red-500'>{handleError}</p>
                     <input type="submit" value="submit" className='p-4 rounded-lg bg-emerald-500 shadow' />
