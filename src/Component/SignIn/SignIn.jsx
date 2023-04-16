@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { GoogleAuthProvider, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { GithubAuthProvider, GoogleAuthProvider, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import { app } from '../../firebase/firebase.config';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,6 +13,7 @@ const SignIn = () => {
 
     const auth = getAuth(app)
     const googleProvider = new GoogleAuthProvider()
+    const githubProvider = new GithubAuthProvider()
 
     // Sign in with google
     const signInWithGoogle = () => {
@@ -22,6 +23,16 @@ const SignIn = () => {
                 setUser(currentUser)
             })
             .catch(e => console.log(e.message))
+    }
+    // Sign in with github
+    const signInWithGithub = () => {
+        signInWithPopup(auth, githubProvider)
+        .then(res => {
+            const currentUser = res.user
+            setUser(currentUser)
+        }).catch(e => {
+            console.log(e.message)
+        })
     }
 
     // sign in with email and password
@@ -75,8 +86,8 @@ const SignIn = () => {
                 <form onSubmit={signInWithEmailPassFunc} action="#" className='flex flex-col gap-5'>
                     <input type="email" ref={emailRef} name="email" id="email" className='p-4 w-full text-slate-700 rounded-lg bg-slate-200 shadow-inner border-none' placeholder='Your email here' />
                     <div className='relative'>
-                        <input type={passwordVisible? `text` : `password`} name="password" id="password" className='p-4 w-full text-slate-700 rounded-lg bg-slate-200 shadow-inner border-none' placeholder='Your password here' />
-                        <span onClick={()=> setPasswordVisible(!passwordVisible)} className='text-slate-700 text-lg absolute right-2 top-3'><FontAwesomeIcon icon={passwordVisible? faEye : faEyeSlash}></FontAwesomeIcon></span> 
+                        <input type={passwordVisible ? `text` : `password`} name="password" id="password" className='p-4 w-full text-slate-700 rounded-lg bg-slate-200 shadow-inner border-none' placeholder='Your password here' />
+                        <span onClick={() => setPasswordVisible(!passwordVisible)} className='text-slate-700 text-lg absolute right-2 top-3'><FontAwesomeIcon icon={passwordVisible ? faEye : faEyeSlash}></FontAwesomeIcon></span>
                     </div>
                     <p className='text-red-500'>{handleError}</p>
                     <input type="submit" value="submit" className='p-4 rounded-lg bg-emerald-500 shadow' />
@@ -86,7 +97,7 @@ const SignIn = () => {
                 {
                     !user ?
                         <div className='space-x-5'> <button onClick={signInWithGoogle} className='px-5 py-3 bg-green-500 rounded-lg shadow'>Sign in with Google</button>
-                            <button className='px-5 py-3 bg-green-500 rounded-lg shadow'>Sign in with Github</button> </div> :
+                            <button onClick={signInWithGithub} className='px-5 py-3 bg-green-500 rounded-lg shadow'>Sign in with Github</button> </div> :
                         <button onClick={signOutFunc} className='px-5 py-3 bg-green-500 rounded-lg shadow'>Sign Out</button>
                 }
                 <p className='font-normal text-slate-700'>New user? <Link to='/register' className='underline text-blue-500'>Regester here</Link> </p>
@@ -98,12 +109,13 @@ const SignIn = () => {
                 {
                     user && <>
                         <p className='font-bold text-green-500'>Successfully log in</p>
-                        <img className='mx-auto rounded-full' src={user?.photoURL} alt="" />
+                        <img className='mx-auto rounded-full h-20 w-20' src={user?.photoURL} alt="" />
                         <h2>{user?.displayName}</h2>
                         <p>{user?.email}</p>
                     </>
                 }
             </div>
+
         </div>
     );
 };
